@@ -222,7 +222,7 @@ app.get("/Posts", async (req, res) => {
 });
 
 //create route
-app.post("/Posts", verifyToken, upload.single("image"), async (req, res) => {
+app.post("/Posts", upload.single("image"), async (req, res) => {
   try {
     console.log(req);
     console.log(req.body, "bandana");
