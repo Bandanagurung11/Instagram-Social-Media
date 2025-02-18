@@ -1,8 +1,9 @@
 "use client"
 import React from "react";
 import Navbar from "@/components/Navbar";
-import StorySection from "@/components/storySection";
+
 import FeedSection from "@/components/FeedSection";
+import StorySection from "@/components/StorySection";
 
 export default function page() {
   const name = "Instagram"; //props, properties

@@ -18,7 +18,7 @@ export default function Page({ params } :{params:{id:string}}) {
   const { toast } = useToast();
   const fetchSinglePost = async () => {
     try {
-      const response = await axios.get(`http://localhost:4000/posts/${params.id}`);
+      const response = await axios.get(`https://instagram-jbna.onrender.com/posts/${params.id}`);
       setSinglePost(response.data);
     } catch (error) {
       toast({
@@ -49,7 +49,7 @@ export default function Page({ params } :{params:{id:string}}) {
     e.preventDefault();
     
     try {
-      const resposne = await axios.patch(`http://localhost:4000/posts/${params.id}`, {
+      const resposne = await axios.patch(`https://instagram-jbna.onrender.com/posts/${params.id}`, {
         title: title,
         image: image,
       });

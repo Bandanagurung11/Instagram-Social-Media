@@ -1,13 +1,20 @@
 "use client"
+import { IPost } from '@/components/FeedSection';
 import { useToast } from '@/hooks/use-toast';
 import axios from 'axios';
 import { Heart } from 'lucide-react';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
 
-export default function Page({params}) {
+interface PageProps{
+  params:{
+    id:string;
+  };
+}
+
+export default function Page({params}:PageProps) {
     const {toast} = useToast();
-    const[singlePost, setSinglePost] = useState();
+    const[singlePost, setSinglePost] = useState<IPost | null>(null);
     console.log(singlePost)
 
     console.log(params.id);
@@ -16,7 +23,7 @@ export default function Page({params}) {
 
     const fetchSinglePost = async()=>{
         try {
-            const response = await axios.get(`http://localhost:4000/Posts/${postId}`);
+            const response = await axios.get(`https://instagram-jbna.onrender.com/Posts/${postId}`);
             console.log(response);
             setSinglePost(response.data);
             // console.log(singlePost, "this is single post");

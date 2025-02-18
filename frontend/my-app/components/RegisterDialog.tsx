@@ -17,20 +17,24 @@ import { useState } from "react";
 
 
 export function RegisterDialog() {
-  const [username, setUsername] = useState("");
-  const [profilePicture, setProfilePicture] = useState("");
-  const createUser = async (e) => {
+  const [username, setUsername] = useState<string>("");
+  const [profilePicture, setProfilePicture] = useState<File | null>(null);
+  const createUser = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:4000/users", {
-        username: username,
-        profilePicture: profilePicture,
-      });
+      if(!profilePicture){
+        return;
+      }
+      const formData = new FormData()
+      formData.append("username", username);
+      formData.append("profilePicture", profilePicture);
+
+      const response = await axios.post("https://instagram-jbna.onrender.com/users", formData);
       console.log(response);
 
       if (response) {
         setUsername("");
-        setProfilePicture("");
+        setProfilePicture(null);
         toast({
           title: "user registered sucessfully"
         })
@@ -39,7 +43,7 @@ export function RegisterDialog() {
     } catch (error) {
       console.log("Something went wrong", error);
       toast({
-        title : "user couldn't be register"
+        title : "user couldn&apos;t be register"
       })
     }
   };
@@ -55,7 +59,7 @@ export function RegisterDialog() {
         <DialogHeader>
           <DialogTitle>Register here</DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
+            Make changes to your profile here. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={createUser}  className="grid gap-4 py-4" >
@@ -77,7 +81,7 @@ export function RegisterDialog() {
             <Input
               id="profilepicture"
               className="col-span-3"
-              onChange={(e) => setProfilePicture(e.target.value)}
+              onChange={(e:React.ChangeEvent<HTMLInputElement>) => setProfilePicture(e.target.files?.[0] || null)}
             />
           </div>
           <DialogFooter>

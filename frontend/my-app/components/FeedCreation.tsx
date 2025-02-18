@@ -21,13 +21,13 @@ export function FeedCreation() {
     // const router = useRouter()
 
     const {toast} = useToast();
-  const [title, setTitle] = useState("");
-  const [image, setImage] = useState<File | null>();
+  const [title, setTitle] = useState<string>("");
+  const [image, setImage] = useState<File | null>(null);
 
-  const [loading, setloading] = useState(false);
+  const [loading, setloading] = useState<boolean>(false);
   console.log(loading);
 
-  const createPost = async (e) => {
+  const createPost = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if(!image){
       return;
@@ -38,7 +38,7 @@ export function FeedCreation() {
     formData.append("title", title);
     formData.append("image", image);
     try {
-      const response = await axios.post("http://localhost:4000/Posts", formData);
+      const response = await axios.post("https://instagram-jbna.onrender.com/Posts", formData);
 
       if (response) {
         setloading(false);
@@ -48,7 +48,7 @@ export function FeedCreation() {
         toast({
             title : "post creation success"
         })
-        // router.push("/FeedSection"); it's use for another page redirecting not components so not useful
+        // router.push("/FeedSection"); it&apos;s use for another page redirecting not components so not useful
 
       }
 
@@ -73,7 +73,7 @@ export function FeedCreation() {
         <DialogHeader>
           <DialogTitle>create post here  {loading ===true && <Loader className=" animate-spin" /> } </DialogTitle>
           <DialogDescription>
-            create post here. Click save when you're done.
+            create post here. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={createPost}  className="grid gap-4 py-4" >
@@ -85,7 +85,7 @@ export function FeedCreation() {
               id="Title"
               value={title}
               className="col-span-3"
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(e:React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
             />
           </div>
 
@@ -98,7 +98,7 @@ export function FeedCreation() {
               id="image"
               className="col-span-3"
               // value={image} for string only not for number
-              onChange={(e) => setImage(e.target.files[0])}
+              onChange={(e:React.ChangeEvent<HTMLInputElement>) => setImage(e.target.files?.[0] || null)}
             />
           </div>
           <DialogFooter>

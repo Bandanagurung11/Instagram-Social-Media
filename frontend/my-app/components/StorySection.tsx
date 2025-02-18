@@ -3,12 +3,19 @@ import axios from "axios";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
+export interface IUser{
+  _id : string;
+  password : string;
+  username : string;
+  profilePicture : string
+}
+
 export default function StorySection() {
-  const [stories, setStories] = useState([]);
+  const [stories, setStories] = useState<IUser[] | null>(null);
 
   const fetchStories = async () => {
     try {
-      const receivedStories = await axios.get("http://localhost:4000/users");
+      const receivedStories = await axios.get("https://instagram-jbna.onrender.com/users");
       console.log(receivedStories.data);
       setStories(receivedStories.data);
     } catch (error) {
@@ -51,7 +58,7 @@ export default function StorySection() {
   return (
 
     <div className="grid grid-cols-5 gap-4">
-      {stories?.map((story, index) => (
+      {stories?.map((story:IUser, index:number) => (
         <div
           key={index}
           className="h-16 w-16 border border-purple-700 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden" 

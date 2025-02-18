@@ -4,7 +4,7 @@ import { Heart, MessageCircleMore } from 'lucide-react';
 import { RegisterDialog } from './RegisterDialog';
 import { FeedCreation } from './FeedCreation';
 
-export default function Navbar({heading} ) {
+export default function Navbar({heading}:{heading : string} ) {
   
   return (
     <div className=' flex items-center justify-between'>
