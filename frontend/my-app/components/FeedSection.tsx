@@ -123,7 +123,6 @@ export default function FeedSection() {
   const [currentCommentWalaId, setcurrentCommentWalaId] = useState<string>("");
   console.log(showComment, "this is show comment");
   console.log(currentCommentWalaId, "this is current comment");
-  const [openList, setOpenList] = useState<boolean>(false);
 
   // const posts = [
   //   {
@@ -206,7 +205,7 @@ export default function FeedSection() {
       {posts?.map((post: IPost, index: number) => (
         <div key={index} className=" space-y-4">
           <div className="flex items-center justify-between">
-            <div className=" flex items-center gap-1">
+            <div className="px-4 lg:px-0 flex items-center gap-1">
               <Image
                 className=" h-10 w-10 rounded-full object-cover"
                 src={
@@ -216,10 +215,12 @@ export default function FeedSection() {
                 height={500}
                 width={500}
               />
-              <p className="text-sm">Loki Chaulagain</p>
-              <div className="opacity-60 flex text-sm items-center">
-                <p><Dot className="m-0" /></p>
-              <p>12d</p>
+              <p className="text-sm font-bold">Loki Chaulagain</p>
+              <div className=" hidden opacity-60 lg:flex text-sm items-center">
+                <p>
+                  <Dot className="m-0" />
+                </p>
+                <p>12d</p>
               </div>
             </div>
 
@@ -241,7 +242,7 @@ export default function FeedSection() {
             width={500}
           />
 
-          <div className=" flex items-center gap-4">
+          <div className="px-4 lg:px-0 flex items-center gap-4">
             <Heart onClick={() => handleLikePost(post._id)} />
             {post.likeCount}
             <MessageCircleMore
@@ -253,11 +254,11 @@ export default function FeedSection() {
             {post.comments.length}
             <Share />
           </div>
-          <p>{post.title}</p>
+          <p className="px-4 lg:px-0">{post.title}</p>
 
           <form
             onSubmit={(e) => handlePostAComment(e, post._id)}
-            className=" flex items-center gap-4"
+            className="px-4 lg:px-0 flex items-center gap-4"
           >
             <Input
               value={commentText}

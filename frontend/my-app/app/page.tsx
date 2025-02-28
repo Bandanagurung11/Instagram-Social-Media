@@ -10,11 +10,11 @@ import Suggestions from "@/components/Suggestions";
 
 export default function page() {
   return (
-    <div>
-      <div className="pl-64  min-h-screen p-4 grid grid-cols-3 gap-8 ">
+    <div className="pt-2 lg:pt-6">
+      <div className="lg:pl-64  min-h-screen lg:grid grid-cols-3 gap-12 ">
         {/* <Navbar heading = {name}  /> */}
         {/* <StorySection /> */}
-        <div className="space-y-6 col-span-2">
+        <div className="space-y-6 pt-2 col-span-2">
           <Stories />
           <FeedSection />
         </div>

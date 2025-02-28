@@ -1,7 +1,7 @@
 "use client"
 
 import { useRef } from "react"
-import { ChevronRight } from "lucide-react"
+import { ChevronDown, ChevronRight, Heart, MessageCircleMore } from "lucide-react"
 import Image from "next/image"
 
 export default function Stories() {
@@ -32,7 +32,17 @@ export default function Stories() {
 
   return (
     <div>
-      <div className="relative">
+      <div className="flex lg:hidden justify-between items-center pb-6 p-4">
+        <div className="flex items-center">
+          <p className="font-bold font-serif text-lg">Instagram</p>
+          <ChevronDown className="h-45 w-5" />
+        </div>
+        <div className="flex gap-4 items-center">
+        <Heart className="h-7 w-7" />
+        <MessageCircleMore className="h-7 w-7" />
+        </div>
+      </div>
+      <div className="relative pl-4 lg:pl-0">
         {/* Stories container */}
         <div
           ref={scrollContainerRef}
