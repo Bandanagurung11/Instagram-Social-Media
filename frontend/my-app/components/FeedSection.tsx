@@ -1,12 +1,22 @@
-"use client"
+"use client";
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
-import { Eye, FilePenLine, Heart, MessageCircleMore, Share, Trash } from "lucide-react";
+import {
+  Dot,
+  Ellipsis,
+  Eye,
+  FilePenLine,
+  Heart,
+  MessageCircleMore,
+  Share,
+  Trash,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import ThreeDotItems from "./onClick/ThreeDotItems";
 
 export interface IPost {
   _id: string;
@@ -21,12 +31,14 @@ export interface IPost {
 }
 
 export default function FeedSection() {
-  const { toast } = useToast()
-  const [posts, setPosts] = useState< IPost[] | null>(null);
+  const { toast } = useToast();
+  const [posts, setPosts] = useState<IPost[] | null>(null);
 
   const fetchPosts = async () => {
     try {
-      const receivedPosts = await axios.get("https://instagram-jbna.onrender.com/Posts");
+      const receivedPosts = await axios.get(
+        "https://instagram-jbna.onrender.com/Posts"
+      );
       console.log(receivedPosts.data);
       setPosts(receivedPosts.data);
     } catch (error) {
@@ -38,53 +50,61 @@ export default function FeedSection() {
     fetchPosts();
   }, []);
 
-  const handleDeletePost = async (_id:string) => {
+  const handleDeletePost = async (_id: string) => {
     try {
       // run delete function backend ko
-      const response = await axios.delete(`https://instagram-jbna.onrender.com/Posts/${_id}`);
+      const response = await axios.delete(
+        `https://instagram-jbna.onrender.com/Posts/${_id}`
+      );
       console.log(response);
       toast({
         title: "Post Deleted",
         description: "Friday, February 10, 2023 at 5:57 PM",
-      })
+      });
       fetchPosts();
       // window.location.reload(); this is tradtional way not use much though
     } catch (error) {
       console.log("Delete Failed", error);
       toast({
         title: "Post deletion failed",
-      })
+      });
     }
-
-    
   };
 
-  const handleLikePost= async (_id : string)=>{
+  const handleLikePost = async (_id: string) => {
     try {
-      const response = await axios.patch(`https://instagram-jbna.onrender.com/Posts/${_id}`,{
-        $inc : {likeCount :1},
-      })
-      console.log("this is response", response.data)
+      const response = await axios.patch(
+        `https://instagram-jbna.onrender.com/Posts/${_id}`,
+        {
+          $inc: { likeCount: 1 },
+        }
+      );
+      console.log("this is response", response.data);
     } catch (error) {
       console.log("something went wrong", error);
       toast({
-        title : "liked failed"
-      })
+        title: "liked failed",
+      });
     }
-    fetchPosts()
-  }
-
+    fetchPosts();
+  };
 
   //  For Comment------------------------->
   const [commentText, setCommentText] = useState<string>("");
   console.log(commentText, "this is comment text");
 
-  const handlePostAComment = async (e:React.FormEvent<HTMLFormElement>,_id: string) => {
-    e.preventDefault()
-  
-    const respose = await axios.patch(`https://instagram-jbna.onrender.com/Posts/${_id}`, {
-      $push: { comments: { commentMessage: commentText } },
-    });
+  const handlePostAComment = async (
+    e: React.FormEvent<HTMLFormElement>,
+    _id: string
+  ) => {
+    e.preventDefault();
+
+    const respose = await axios.patch(
+      `https://instagram-jbna.onrender.com/Posts/${_id}`,
+      {
+        $push: { comments: { commentMessage: commentText } },
+      }
+    );
 
     fetchPosts();
     setCommentText("");
@@ -98,12 +118,12 @@ export default function FeedSection() {
     }
   };
 
-   // Show comments handler ---------------------------------->
-   const [showComment, setShowComment] = useState<boolean>(false);
-   const [currentCommentWalaId, setcurrentCommentWalaId] = useState<string>("");
-   console.log(showComment, "this is show comment");
-   console.log(currentCommentWalaId, "this is current comment");
- 
+  // Show comments handler ---------------------------------->
+  const [showComment, setShowComment] = useState<boolean>(false);
+  const [currentCommentWalaId, setcurrentCommentWalaId] = useState<string>("");
+  console.log(showComment, "this is show comment");
+  console.log(currentCommentWalaId, "this is current comment");
+  const [openList, setOpenList] = useState<boolean>(false);
 
   // const posts = [
   //   {
@@ -182,33 +202,35 @@ export default function FeedSection() {
   //   },
   // ];
   return (
-    <div className=" space-y-8">
-      {posts?.map((post :IPost, index :number) => (
-        <div
-          key={index}
-          className=" space-y-4">
+    <div className=" place-items-center space-y-8">
+      {posts?.map((post: IPost, index: number) => (
+        <div key={index} className=" space-y-4">
           <div className="flex items-center justify-between">
-            <div className=" flex items-center gap-2">
+            <div className=" flex items-center gap-1">
               <Image
                 className=" h-10 w-10 rounded-full object-cover"
-                src={"https://images.unsplash.com/photo-1611262588024-d12430b98920?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c3RvcnklMjBpbnN0YWdyYW18ZW58MHx8MHx8fDA%3D"}
+                src={
+                  "https://images.unsplash.com/photo-1611262588024-d12430b98920?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c3RvcnklMjBpbnN0YWdyYW18ZW58MHx8MHx8fDA%3D"
+                }
                 alt="img"
                 height={500}
                 width={500}
               />
-              <p>Loki Chaulagain</p>
+              <p className="text-sm">Loki Chaulagain</p>
+              <div className="opacity-60 flex text-sm items-center">
+                <p><Dot className="m-0" /></p>
+              <p>12d</p>
+              </div>
             </div>
 
-
-            <Link href={`/post/view/${post._id}`}>
+            {/* <Link href={`/post/view/${post._id}`}>
             <Eye/>
             </Link>
             <Link href={`post/edit/${post._id}`}>
             <FilePenLine />
             </Link>
-            
-
-            <Trash onClick={()=>handleDeletePost(post._id)} />
+            <Trash onClick={()=>handleDeletePost(post._id)} /> */}
+            <ThreeDotItems />
           </div>
 
           <Image
@@ -233,7 +255,10 @@ export default function FeedSection() {
           </div>
           <p>{post.title}</p>
 
-          <form onSubmit={(e)=>handlePostAComment(e,post._id)} className=" flex items-center gap-4">
+          <form
+            onSubmit={(e) => handlePostAComment(e, post._id)}
+            className=" flex items-center gap-4"
+          >
             <Input
               value={commentText}
               required={true}
@@ -245,13 +270,11 @@ export default function FeedSection() {
 
           {showComment === true && currentCommentWalaId === post._id && (
             <div className=" bg-gray-200 p-4 rounded-lg border border-sky-200">
-              {post.comments.map((comment, index:number) => (
+              {post.comments.map((comment, index: number) => (
                 <p key={index}>{comment.commentMessage}</p>
               ))}
             </div>
           )}
-
-
         </div>
       ))}
     </div>
