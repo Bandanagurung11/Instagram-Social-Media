@@ -24,14 +24,19 @@ cloudinary.config({
 //verify token
 const verifyToken =(req, res, next)=>{
   const token = req.headers["authorization"];
-  if(!token){
+  console.log(token, "token from frontend")
+  if(!token){ // frotent bata token pathayena vaney
     return res.status(401).json({message: "No token provided"});
   }
-  jwt.verify(token, "!@E#@fvcnwevw$@$", (err,decoded)=>{
+  // token= Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJhbmRhbmExMiIsImlhdCI6MTc0MDc5NjYyOSwiZXhwIjoxNzQwODgzMDI5fQ.BWqhUhXAwgV8j9AmcYg8JkPLkbgkoEdJgNLgiD2-MMo
+  const pureToken=token.split(" ")[1]; //pureToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJhbmRhbmExMiIsImlhdCI6MTc0MDc5NjYyOSwiZXhwIjoxNzQwODgzMDI5fQ.BWqhUhXAwgV8j9AmcYg8JkPLkbgkoEdJgNLgiD2-MMo
+  console.log(pureToken, "this is pure token")
+  jwt.verify(pureToken, "!@E#@fvcnwevw$@$", (err,decoded)=>{
   if(err){
     return res.status(403).json({message: "Failed to authenticate token"});
   }
-  console.log(decoded, "decoded");
+  console.log(decoded, "decoded"); //{ username: 'bandana12', iat: 1740796629, exp: 1740883029 }
+  next();
   //req.useId =decoded.userId;
   })
 }
@@ -208,7 +213,7 @@ app.delete("/users/:id", async (req, res) => {
 });
 
 // 6. Route configuration
-app.get("/Posts", async (req, res) => {
+app.get("/Posts",verifyToken, async (req, res) => {
   try {
     const allPost = await Post.find();
     console.log(allPost); //for developer to debug
@@ -222,7 +227,7 @@ app.get("/Posts", async (req, res) => {
 });
 
 //create route
-app.post("/Posts", upload.single("image"), async (req, res) => {
+app.post("/Posts",verifyToken, upload.single("image"), async (req, res) => {
   try {
     console.log(req);
     console.log(req.body, "bandana");
@@ -259,7 +264,7 @@ app.get("/Posts/:id", async (req, res) => {
 //patch is used to update some fields of the object and it does not create the object if it does not exist
 
 //update one by id
-app.patch("/Posts/:id", async (req, res) => {
+app.patch("/Posts/:id",verifyToken, async (req, res) => {
   try {
     const singlePost = await Post.findById(req.params.id);
     if (!singlePost) {
@@ -282,7 +287,7 @@ app.patch("/Posts/:id", async (req, res) => {
 });
 
 // delete by id
-app.delete("/Posts/:id", async (req, res) => {
+app.delete("/Posts/:id",verifyToken, async (req, res) => {
   try {
     const singlePost = await Post.findById(req.params.id);
     if (!singlePost) {
