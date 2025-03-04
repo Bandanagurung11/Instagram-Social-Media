@@ -64,31 +64,35 @@ export default function Suggestions() {
         <p className="font-bold">See All</p>
       </div>
       <div>
-        <div className=" space-y-6">
+        <div className=" space-y-4">
           {suggestions.map((each, index) => (
             <div key={index} className="flex items-center justify-between">
-              <div  className="flex gap-2 items-center">
-              <div className="relative w-12 h-12 rounded-full">
-                <Image
-                  className="w-12 h-12 object-cover flex justify-center rounded-full"
-                  src={each.image}
-                  alt="profileimg"
-                  height={100}
-                  width={100}
-                ></Image>
+              <div className="flex gap-2 items-center">
+                <div className="relative w-12 h-12 rounded-full">
+                  <Image
+                    className="w-12 h-12 object-cover flex justify-center rounded-full"
+                    src={each.image}
+                    alt="profileimg"
+                    height={100}
+                    width={100}
+                  ></Image>
+                </div>
+                <div className="text-sm">
+                  <p className="font-bold">{each.username} </p>
+                  <p className="opacity-60">Followed by {each.fullname} </p>
+                </div>
               </div>
-              <div className="text-sm">
-                <p className="font-bold">{each.username} </p>
-                <p className="opacity-60">Followed by {each.fullname} </p>
-              </div>
-            </div>
-            <p className="text-blue-600 text-sm">{each.text}</p>
+              <p className="text-blue-600 text-sm">{each.text}</p>
             </div>
           ))}
-          
         </div>
-        <p></p>
-        <p></p>
+        <div className="py-12 space-y-2 opacity-40 text-xs">
+          <div>
+            <p>About.Help.Press.API.Jobs.Privacy.Terms</p>
+            <p>Locations.Language.Meta.Verified</p>
+          </div>
+          <p>© 2025 Instagram from Meta</p>
+        </div>
       </div>
     </div>
   );

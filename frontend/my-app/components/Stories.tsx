@@ -3,8 +3,10 @@
 import { useRef } from "react"
 import { ChevronDown, ChevronRight, Heart, MessageCircleMore } from "lucide-react"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 export default function Stories() {
+  const router = useRouter();
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
   const scrollRight = () => {
@@ -32,6 +34,7 @@ export default function Stories() {
 
   return (
     <div>
+      {/* for small device */}
       <div className="flex lg:hidden justify-between items-center pb-6 p-4">
         <div className="flex items-center">
           <p className="font-bold font-serif text-lg">Instagram</p>
@@ -39,14 +42,15 @@ export default function Stories() {
         </div>
         <div className="flex gap-4 items-center">
         <Heart className="h-7 w-7" />
-        <MessageCircleMore className="h-7 w-7" />
+        <MessageCircleMore className="h-7 w-7" onClick={()=>router.push('/inbox')} />
         </div>
       </div>
-      <div className="relative pl-4 lg:pl-0">
+
+      <div className="relative lg:pl-0">
         {/* Stories container */}
         <div
           ref={scrollContainerRef}
-          className="flex gap-4 overflow-x-auto scrollbar-hide"
+          className="flex gap-4 pl-2 overflow-x-auto scrollbar-hide"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {stories.map((story) => (

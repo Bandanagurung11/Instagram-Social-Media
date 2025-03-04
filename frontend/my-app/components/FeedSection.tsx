@@ -2,14 +2,14 @@
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
 import {
+  Bookmark,
   Dot,
-  Ellipsis,
-  Eye,
-  FilePenLine,
+  EllipsisVertical,
   Heart,
   MessageCircleMore,
+  MoreHorizontal,
+  Send,
   Share,
-  Trash,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -36,8 +36,15 @@ export default function FeedSection() {
 
   const fetchPosts = async () => {
     try {
+      const mytoken = localStorage.getItem("token");
+      console.log(mytoken, "feedsectiontoken")
       const receivedPosts = await axios.get(
-        "https://instagram-jbna.onrender.com/Posts"
+        "https://instagram-jbna.onrender.com/Posts",
+        {
+          headers:{
+            Authorization:`Bearer ${mytoken}`,
+          }
+        }
       );
       console.log(receivedPosts.data);
       setPosts(receivedPosts.data);
@@ -50,26 +57,26 @@ export default function FeedSection() {
     fetchPosts();
   }, []);
 
-  const handleDeletePost = async (_id: string) => {
-    try {
-      // run delete function backend ko
-      const response = await axios.delete(
-        `https://instagram-jbna.onrender.com/Posts/${_id}`
-      );
-      console.log(response);
-      toast({
-        title: "Post Deleted",
-        description: "Friday, February 10, 2023 at 5:57 PM",
-      });
-      fetchPosts();
-      // window.location.reload(); this is tradtional way not use much though
-    } catch (error) {
-      console.log("Delete Failed", error);
-      toast({
-        title: "Post deletion failed",
-      });
-    }
-  };
+  // const handleDeletePost = async (_id: string) => {
+  //   try {
+  //     // run delete function backend ko
+  //     const response = await axios.delete(
+  //       `https://instagram-jbna.onrender.com/Posts/${_id}`
+  //     );
+  //     console.log(response);
+  //     toast({
+  //       title: "Post Deleted",
+  //       description: "Friday, February 10, 2023 at 5:57 PM",
+  //     });
+  //     fetchPosts();
+  //     // window.location.reload(); this is tradtional way not use much though
+  //   } catch (error) {
+  //     console.log("Delete Failed", error);
+  //     toast({
+  //       title: "Post deletion failed",
+  //     });
+  //   }
+  // };
 
   const handleLikePost = async (_id: string) => {
     try {
@@ -204,8 +211,8 @@ export default function FeedSection() {
     <div className=" place-items-center space-y-8">
       {posts?.map((post: IPost, index: number) => (
         <div key={index} className=" space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="px-4 lg:px-0 flex items-center gap-1">
+          <div className="flex px-2 lg:p-0  items-center justify-between">
+            <div className=" flex items-center gap-1">
               <Image
                 className=" h-10 w-10 rounded-full object-cover"
                 src={
@@ -231,29 +238,39 @@ export default function FeedSection() {
             <FilePenLine />
             </Link>
             <Trash onClick={()=>handleDeletePost(post._id)} /> */}
-            <ThreeDotItems />
+            <MoreHorizontal className="hidden lg:block" />
+            <EllipsisVertical className="block lg:hidden" />
           </div>
 
           <Image
-            className="object-cover"
+            className="object-cover rounded-sm"
             src={post.image}
             alt="img"
             height={500}
             width={500}
           />
 
-          <div className="px-4 lg:px-0 flex items-center gap-4">
-            <Heart onClick={() => handleLikePost(post._id)} />
-            {post.likeCount}
-            <MessageCircleMore
+          <div className="px-4 lg:px-0 flex justify-between items-center ">
+            <div className="flex items-center gap-4">
+           <div className="flex items-center gap-1">
+           <Heart className="cursor-pointer hover:opacity-40" onClick={() => handleLikePost(post._id)} />
+           <span className="block lg:hidden">{post.likeCount}</span>
+           </div>
+           <div className="flex items-center gap-1">
+           <MessageCircleMore
+           className="cursor-pointer hover:opacity-40"
               onClick={() => {
                 setShowComment(!showComment);
                 setcurrentCommentWalaId(post._id);
               }}
             />{" "}
-            {post.comments.length}
-            <Share />
+            <span className="block lg:hidden">{post.comments.length}</span>
+           </div>
+            <Send className="cursor-pointer hover:opacity-40" />
+            </div>
+            <Bookmark className="cursor-pointer hover:opacity-40" />
           </div>
+          <p className="px-1 hidden lg:block">{post.likeCount} Likes</p>
           <p className="px-4 lg:px-0">{post.title}</p>
 
           <form
