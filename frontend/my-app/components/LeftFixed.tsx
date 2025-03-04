@@ -10,18 +10,25 @@ import {
   SquarePlus,
 } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import Menu from "./onClick/Menu";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import SearchBar from "./onClick/SearchBar";
 
 export default function LeftFixed({ NotExpand }: { NotExpand: boolean }) {
   const router = useRouter();
+  const [activeItem, setActiveItem] = useState<string | null>(null);
+   const [isOpen, setIsOpen] = React.useState(false)
+      const toggleDrawer = () => {
+          setIsOpen((prevState) => !prevState)
+      }
 
   const items = [
     {
       icon: <House className="h-7 w-7" />,
       name: "Home",
+      href:"/"
     },
     {
       icon: <Search className="h-7 w-7" />,
@@ -34,6 +41,7 @@ export default function LeftFixed({ NotExpand }: { NotExpand: boolean }) {
     {
       icon: <Film className="h-7 w-7" />,
       name: "Reel",
+      href:"/reels"
     },
     {
       icon: <MessageCircleMore className="h-7 w-7" />,
@@ -90,7 +98,15 @@ export default function LeftFixed({ NotExpand }: { NotExpand: boolean }) {
           <div
             key={index}
             className="flex gap-4 items-center hover:bg-gray-100 cursor-pointer rounded-md py-2 pl-2"
-            onClick={() => router.push(`${item.href}`)}
+            onClick={() => {
+              if (item.name === "Search") {
+                toggleDrawer();
+              } else {
+                router.push(`${item.href}`);
+                setActiveItem(item.name);
+              }
+            }
+          }
           >
             <p>
               {typeof item.icon === "string" ? (
@@ -102,13 +118,17 @@ export default function LeftFixed({ NotExpand }: { NotExpand: boolean }) {
                   width={100}
                 />
               ) : (
-                item.icon
+                React.cloneElement(item.icon, {
+                  className: `h-7 w-7 ${activeItem === item.name ? 'text-black' : 'text-gray-500'}`,
+                })
+
               )}
             </p>
-            <p className={`${NotExpand ? "hidden" : "block"}`}>{item.name}</p>
+            <p className={`${NotExpand ? "hidden" : "block"} ${activeItem === item.name ? "font-bold" : ""}`}>{item.name}</p>
           </div>
         ))}
         <Menu NotExpand={NotExpand} />
+        <SearchBar isOpen={isOpen} toggleDrawer={toggleDrawer} />
       </div>
     </div>
   );
