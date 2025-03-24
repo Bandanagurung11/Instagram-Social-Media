@@ -4,7 +4,7 @@ import { Input } from './ui/input'
 import axios from 'axios';
 import { Button } from './ui/button';
 
-export default function Login() {
+export default function Login({onLogin}:{onLogin:()=>void}) {
      const [username, setUsername] = useState("");
       const [password, setPassword] = useState("");
     
@@ -17,6 +17,7 @@ export default function Login() {
           console.log(response.data) 
           // console.log(response.data.jwtToken, "this is token in homepage");
           localStorage.setItem("token", response.data.jwtToken);
+          onLogin();
         } catch (error) {
           console.log(error)
           
@@ -37,7 +38,9 @@ export default function Login() {
             placeholder="password"
             value={password}
           ></Input>
-          <Button type="submit" onClick={handleLogin}>submit</Button>
+         <div className='flex justify-center'>
+         <Button type="submit" onClick={handleLogin}>submit</Button>
+         </div>
         </div>
   )
 }
