@@ -1,12 +1,18 @@
 "use client";
 import FeedSection from "@/components/FeedSection";
+import LeftFixed from "@/components/LeftFixed";
 import Login from "@/components/Login";
 import Stories from "@/components/Stories";
 import Suggestions from "@/components/Suggestions";
 import { Button } from "@/components/ui/button";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Page() {
+  const pathname = usePathname();
+  const expandedPages = ["/inbox"];
+  const NotExpandedPage = expandedPages.includes(pathname);
+
   const [isLoggedIn, setIsLoggedIn] = useState(
     () => !!localStorage.getItem("token")
   ); // Initialize from localStorage
@@ -34,6 +40,7 @@ export default function Page() {
   }
   return (
     <div>
+      <LeftFixed NotExpand={NotExpandedPage}/>
       <div className="lg:pl-60  min-h-screen lg:grid grid-cols-3 gap-12">
         <div className="space-y-6 pt-4 col-span-2">
           <Stories />
